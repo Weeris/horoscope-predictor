@@ -15,8 +15,39 @@ based on multiple divination systems including Chinese Zodiac, Western Astrology
 
 # User input section
 col1, col2 = st.columns(2)
+
+# Create a list of dates from 100 years ago to today
+current_year = datetime.now().year
+start_year = current_year - 100
+all_dates = [datetime(start_year + i, 1, 1) for i in range(101)]  # 101 years from start_year to current year
+
+# Create a more user-friendly date selection
 with col1:
-    birth_date = st.date_input("Select your birth date", value=datetime.today() - timedelta(days=365*25))
+    st.subheader("Birth Information")
+    birth_year = st.selectbox("Birth Year", options=range(current_year, start_year - 1, -1), index=25)
+    birth_month = st.selectbox("Birth Month", options=range(1, 13), format_func=lambda x: ['January', 'February', 'March', 'April', 'May', 'June', 
+                                                                                          'July', 'August', 'September', 'October', 'November', 'December'][x-1])
+    
+    # Determine the number of days in the selected month
+    if birth_month in [1, 3, 5, 7, 8, 10, 12]:
+        max_day = 31
+    elif birth_month in [4, 6, 9, 11]:
+        max_day = 30
+    else:  # February
+        # Check if it's a leap year
+        if (birth_year % 4 == 0 and birth_year % 100 != 0) or (birth_year % 400 == 0):
+            max_day = 29
+        else:
+            max_day = 28
+    
+    birth_day = st.selectbox("Birth Day", options=range(1, max_day + 1))
+
+    # Create the birth date from selected components
+    try:
+        birth_date = datetime(birth_year, birth_month, birth_day).date()
+    except ValueError:
+        # Handle invalid dates like Feb 29 on non-leap years
+        birth_date = datetime(birth_year, 2, 28).date()  # Default to Feb 28
 
 with col2:
     st.markdown("### About Your Birth Date")
