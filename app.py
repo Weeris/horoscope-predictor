@@ -48,9 +48,10 @@ LANGUAGES = {
         'prediction_label': 'คำทำนาย',
         'explanation_label': 'คำอธิบาย',
         'confidence_label': 'ความเชื่อมั่น',
+        'confidence_explanation': 'เปอร์เซ็นต์ความเชื่อมั่นแสดงถึงระดับความมั่นใจของแต่ละศาสตร์ที่มีต่อคำทำนาย',
         'explanation': 'คำอธิบาย',
         'from_each_system': 'จากแต่ละศาสตร์',
-        'disclaimer': '*โปรดจำไว้ว่า: การทำนายเหล่านี้มีไว้เพื่อความบันเทิง ใช้เป็นแนวทาง ไม่ใช่ความจริงสัมบูณ์*'
+        'disclaimer': '*โปรดจำไว้ว่า: การทำนายเหล่านี้มีไว้เพื่อความบันเทิง ใช้เป็นแนวทาง ไม่ใช่ความจริงสัมบูรณ์*'
     },
     'en': {
         'title': '🔮 Multilingual Fortune Teller',
@@ -93,6 +94,7 @@ LANGUAGES = {
         'prediction_label': 'Prediction',
         'explanation_label': 'Explanation',
         'confidence_label': 'Confidence',
+        'confidence_explanation': 'Confidence percentage represents the level of certainty each system has in its prediction',
         'explanation': 'Explanation',
         'from_each_system': 'from each system',
         'disclaimer': '*Please note: These predictions are for entertainment purposes only, meant as guidance, not absolute truth*'
@@ -138,6 +140,7 @@ LANGUAGES = {
         'prediction_label': '预测',
         'explanation_label': '解释',
         'confidence_label': '信心',
+        'confidence_explanation': '信心百分比表示每个系统对其预测的确定程度',
         'explanation': '解释',
         'from_each_system': '来自每个系统',
         'disclaimer': '*请注意：这些预测仅供娱乐，作为指导，不是绝对真理*'
@@ -1377,9 +1380,11 @@ for category in categories:
         for idx, row in detail_df.iterrows():
             with st.container():
                 st.markdown(f"**{row['System' if st.session_state.language != 'th' else 'ศาสตร์' if st.session_state.language == 'th' else '系统']}**")
-                st.markdown(f"{texts['prediction_label'] if 'prediction_label' in texts else 'Prediction'}: {row['Prediction' if st.session_state.language != 'th' else 'คำทำนาย' if st.session_state.language == 'th' else '预测']}")
+                st.markdown(f"**{texts['prediction_label'] if 'prediction_label' in texts else 'Prediction'}:** {row['Prediction' if st.session_state.language != 'th' else 'คำทำนาย' if st.session_state.language == 'th' else '预测']}")
                 st.markdown(f"{texts['explanation_label'] if 'explanation_label' in texts else 'Explanation'}: {row['Explanation' if st.session_state.language != 'th' else 'คำอธิบาย' if st.session_state.language == 'th' else '解释']}")
                 st.markdown(f"{texts['confidence_label'] if 'confidence_label' in texts else 'Confidence'}: {row['Confidence' if st.session_state.language != 'th' else 'ความเชื่อมั่น' if st.session_state.language == 'th' else '信心']}")
+                if row['Confidence' if st.session_state.language != 'th' else 'ความเชื่อมั่น' if st.session_state.language == 'th' else '信心'] != "N/A":
+                    st.markdown(f"*{texts['confidence_explanation']}*")
                 st.markdown("---")
 
 # Additional insights in a more organized way
