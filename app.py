@@ -42,6 +42,14 @@ LANGUAGES = {
         'detailed_predictions': 'คำทำนายโดยละเอียดจากแต่ละศาสตร์',
         'view_details': 'ดูคำทำนายของ {} จากแต่ละศาสตร์',
         'more_insights': 'ข้อมูลเพิ่มเติมจากศาสตร์ต่าง ๆ',
+        'islamic_zodiac': 'ราศีอิสลาม',
+        'hindu_nakshatra': 'นาขัตระฮินดู',
+        'systems_used': 'จำนวนศาสตร์ที่ใช้',
+        'prediction_label': 'คำทำนาย',
+        'explanation_label': 'คำอธิบาย',
+        'confidence_label': 'ความเชื่อมั่น',
+        'explanation': 'คำอธิบาย',
+        'from_each_system': 'จากแต่ละศาสตร์',
         'disclaimer': '*โปรดจำไว้ว่า: การทำนายเหล่านี้มีไว้เพื่อความบันเทิง ใช้เป็นแนวทาง ไม่ใช่ความจริงสัมบูณ์*'
     },
     'en': {
@@ -79,6 +87,14 @@ LANGUAGES = {
         'detailed_predictions': 'Detailed Predictions by Each System',
         'view_details': 'View {} predictions from each system',
         'more_insights': 'Additional Insights from Different Systems',
+        'islamic_zodiac': 'Islamic Zodiac',
+        'hindu_nakshatra': 'Hindu Nakshatra',
+        'systems_used': 'Systems Used',
+        'prediction_label': 'Prediction',
+        'explanation_label': 'Explanation',
+        'confidence_label': 'Confidence',
+        'explanation': 'Explanation',
+        'from_each_system': 'from each system',
         'disclaimer': '*Please note: These predictions are for entertainment purposes only, meant as guidance, not absolute truth*'
     },
     'zh': {
@@ -116,6 +132,14 @@ LANGUAGES = {
         'detailed_predictions': '各系统详细预测',
         'view_details': '查看{}的各系统预测',
         'more_insights': '来自不同系统的额外见解',
+        'islamic_zodiac': '伊斯兰星座',
+        'hindu_nakshatra': '印度星座',
+        'systems_used': '使用系统',
+        'prediction_label': '预测',
+        'explanation_label': '解释',
+        'confidence_label': '信心',
+        'explanation': '解释',
+        'from_each_system': '来自每个系统',
         'disclaimer': '*请注意：这些预测仅供娱乐，作为指导，不是绝对真理*'
     }
 }
@@ -1293,26 +1317,55 @@ for category in categories:
                 "Confidence" if st.session_state.language != 'th' else "ความเชื่อมั่น" if st.session_state.language == 'th' else "信心": f"{details['confidence']}%"
             })
         
-        # Add some systems that don't speak about this topic
-        non_relevant_systems = {
-            'th': ["ระบบ A", "วิชา B", "ศาสตร์ C"],
-            'en': ["System A", "Field B", "Study C"],
-            'zh': ["系统A", "领域B", "学科C"]
-        }
+        # Add additional real divination systems to complete the 15 systems total
+        additional_systems = {}
+        if st.session_state.language == 'th':
+            additional_systems = {
+                "โหราศาสตร์อียิปต์": {
+                    "prediction": f"โหราศาสตร์อียิปต์ทำนายว่าด้าน {category} จะมีลักษณะเป็น...",
+                    "explanation": f"เกิดจากอิทธิพลของเทพเจ้าอียิปต์โบราณที่มีผลต่อด้าน {category}",
+                    "confidence": random.randint(60, 85)
+                },
+                "ไพ่ทาโรต์": {
+                    "prediction": f"ไพ่ทาโรต์แสดงให้เห็นว่าด้าน {category} จะเป็นไปในทิศทาง...",
+                    "explanation": f"จากการตีความไพ่ทาโรต์ที่ได้สุ่มในวันนี้ ซึ่งบ่งบอกถึงพลังงานในด้าน {category}",
+                    "confidence": random.randint(55, 80)
+                }
+            }
+        elif st.session_state.language == 'en':
+            additional_systems = {
+                "Egyptian Astrology": {
+                    "prediction": f"Egyptian astrology predicts that your {category} will be characterized by...",
+                    "explanation": f"Influenced by ancient Egyptian deities affecting your {category} aspects",
+                    "confidence": random.randint(60, 85)
+                },
+                "Tarot Reading": {
+                    "prediction": f"Tarot cards reveal that your {category} will move in the direction of...",
+                    "explanation": f"Based on today's tarot reading interpretation, indicating energy patterns for {category}",
+                    "confidence": random.randint(55, 80)
+                }
+            }
+        else:  # zh
+            additional_systems = {
+                "埃及占星术": {
+                    "prediction": f"埃及占星术预测您的{category}将表现为...",
+                    "explanation": f"受古埃及神祇影响，作用于您的{category}方面",
+                    "confidence": random.randint(60, 85)
+                },
+                "塔罗牌": {
+                    "prediction": f"塔罗牌揭示您的{category}将朝向...",
+                    "explanation": f"基于今天抽取的塔罗牌解读，表明{category}的能量模式",
+                    "confidence": random.randint(55, 80)
+                }
+            }
         
-        for i in range(2):  # Add 2 systems that don't speak about this topic
-            system_name = random.choice(non_relevant_systems[st.session_state.language])
+        # Add these additional systems to reach the total of 15
+        for system_name, details in additional_systems.items():
             detail_data.append({
                 "System" if st.session_state.language != 'th' else "ศาสตร์" if st.session_state.language == 'th' else "系统": system_name,
-                "Prediction" if st.session_state.language != 'th' else "คำทำนาย" if st.session_state.language == 'th' else "预测": 
-                    f"ไม่ได้กล่าวถึงประเด็นนี้" if st.session_state.language == 'th' else
-                    "Not mentioned for this topic" if st.session_state.language == 'en' else
-                    "未提及此话题",
-                "Explanation" if st.session_state.language != 'th' else "คำอธิบาย" if st.session_state.language == 'th' else "解释": 
-                    f"ระบบ {system_name} ไม่มีข้อมูลเกี่ยวกับ {category}" if st.session_state.language == 'th' else
-                    f"System {system_name} has no information about {category}" if st.session_state.language == 'en' else
-                    f"系统{system_name}没有关于{category}的信息",
-                "Confidence" if st.session_state.language != 'th' else "ความเชื่อมั่น" if st.session_state.language == 'th' else "信心": "N/A"
+                "Prediction" if st.session_state.language != 'th' else "คำทำนาย" if st.session_state.language == 'th' else "预测": details["prediction"],
+                "Explanation" if st.session_state.language != 'th' else "คำอธิบาย" if st.session_state.language == 'th' else "解释": details["explanation"],
+                "Confidence" if st.session_state.language != 'th' else "ความเชื่อมั่น" if st.session_state.language == 'th' else "信心": f"{details['confidence']}%"
             })
         
         # Sort by confidence (highest first, with N/A at the end)
@@ -1349,9 +1402,9 @@ with col2:
     else:  # zh
         era_label = "**佛历**"
     st.markdown(f"{era_label}: {buddhist_era}")
-    st.markdown(f"**{texts['islamic_zodiac']}:** {islamic_sign}")
-    st.markdown(f"**{texts['hindu_nakshatra']}:** {hindu_nakshatra}")
-    st.markdown(f"**Systems Used:** 15" if st.session_state.language == 'en' else "**จำนวนศาสตร์ที่ใช้:** 15 ศาสตร์" if st.session_state.language == 'th' else "**使用系统:** 15个系统")
+    st.markdown(f"**{texts['islamic_zodiac'] if 'islamic_zodiac' in texts else 'Islamic Zodiac' if st.session_state.language == 'en' else 'ราศีอิสลาม' if st.session_state.language == 'th' else '伊斯兰星座'}:** {islamic_sign}")
+    st.markdown(f"**{texts['hindu_nakshatra'] if 'hindu_nakshatra' in texts else 'Hindu Nakshatra' if st.session_state.language == 'en' else 'นาขัตระฮินดู' if st.session_state.language == 'th' else '印度星座'}:** {hindu_nakshatra}")
+    st.markdown(f"**{texts['systems_used'] if 'systems_used' in texts else 'Systems Used' if st.session_state.language == 'en' else 'จำนวนศาสตร์ที่ใช้' if st.session_state.language == 'th' else '使用系统'}:** 15")
 
 # Footer
 st.divider()
