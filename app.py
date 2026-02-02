@@ -6,11 +6,10 @@ import random
 import math
 
 # Title and description
-st.set_page_config(page_title="โปรแกรมทำนายดวงชะตาหลายระบบ (ฉบับละเอียด)", layout="wide")
-st.title("🔮 โปรแกรมทำนายดวงชะตาหลายระบบ (ฉบับละเอียด)")
+st.set_page_config(page_title="ทำนายดวงชะตาแบบเข้าใจง่าย", layout="wide")
+st.title("🔮 ทำนายดวงชะตาแบบเข้าใจง่าย")
 st.markdown("""
-ยินดีต้อนรับสู่ประสบการณ์การทำนายดวงชะตาที่สมบูรณ์แบบ! กรุณาใส่วันเกิดของคุณเพื่อรับคำทำนายส่วนบุคคล
-โดยใช้ระบบการพยากรณ์หลายแบบรวมถึงราศีจีน โหราศาสตร์ตะวันตก ตัวเลขศาสตร์ และดวงจันทร์
+ยินดีต้อนรับ! กรุณาใส่วันเกิดของคุณเพื่อรับคำทำนายส่วนบุคคลจากหลายระบบ
 """)
 
 # User input section
@@ -18,12 +17,12 @@ col1, col2 = st.columns(2)
 
 # Create a more user-friendly date selection
 with col1:
-    st.subheader("ข้อมูลวันเกิด")
+    st.subheader("ข้อมูลวันเกิดของคุณ")
     current_year = datetime.now().year
     start_year = current_year - 100
     birth_year = st.selectbox("ปีเกิด (ค.ศ.)", options=range(current_year, start_year - 1, -1), index=25)
-    birth_month = st.selectbox("เดือนเกิด", options=range(1, 13), format_func=lambda x: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
-                                                                                          'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'][x-1])
+    birth_month = st.selectbox("เดือนเกิด", options=range(1, 13), format_func=lambda x: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 
+                                                                                          'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'][x-1])
     
     # Determine the number of days in the selected month
     if birth_month in [1, 3, 5, 7, 8, 10, 12]:
@@ -47,8 +46,8 @@ with col1:
         birth_date = datetime(birth_year, 2, 28).date()  # Default to Feb 28
 
 with col2:
-    st.markdown("### เกี่ยวกับวันเกิดของคุณ")
-    st.write(f"**วันที่เลือก:** {birth_date.strftime('%d %B %Y')}")  # Show AD year
+    st.markdown("### ข้อมูลของคุณ")
+    st.write(f"**วันเกิด:** {birth_date.strftime('%d %b %Y')} (ค.ศ.)")
     age = (datetime.now().date() - birth_date).days // 365
     st.write(f"**อายุโดยประมาณ:** {age} ปี")
 
@@ -284,52 +283,26 @@ japanese_animal = get_japanese_zodiac(birth_date.year)
 ethiopian_sign = get_ethiopian_zodiac(birth_date.day, birth_date.month)
 coptic_sign = get_ethiopian_zodiac(birth_date.day, birth_date.month)  # Using similar calculation
 
-# Display calculated information
+# Display calculated information in a more organized way
 st.divider()
-st.subheader("โพรไฟล์ทางดาราศาสตร์ของคุณ")
+st.subheader("ข้อมูลดวงของคุณ")
 
+# Create organized columns for astrological data
 col1, col2, col3 = st.columns(3)
-col1.metric("ราศีจีน", f"{chinese_animal}\n({chinese_element})", 
-           help="จากปีเกิดของคุณ")
-col2.metric("ราศีตะวันตก", western_sign, 
-           help="ราศีดวงอาทิตย์ตามวันเกิดของคุณ")
-col3.metric("เส้นทางชีวิต", life_path, 
-           help="ตัวเลขศาสตร์เส้นทางชีวิต")
+col1.metric("ราศีจีน", f"{chinese_animal}", help=f"สัตว์ประจำปีเกิด: {chinese_animal}\nธาตุ: {chinese_element}")
+col2.metric("ราศีตะวันตก", western_sign, help="ราศีดวงอาทิตย์ตามวันเกิด")
+col3.metric("เส้นทางชีวิต", life_path, help="ตัวเลขศาสตร์เส้นทางชีวิต")
 
 col4, col5, col6 = st.columns(3)
-col4.metric("ราศีจันทร์", moon_sign, 
-           help="ราศีจันทร์โดยประมาณ")
-col5.metric("ราศีเวทิก", vedic_sign, 
-           help="ราศีเวทิกตามวันเกิด")
-col6.metric("ตัวเลขธาตุ", penta_trait, 
-           help="คุณลักษณะตามธาตุ")
+col4.metric("ราศีจันทร์", moon_sign, help="ราศีดวงจันทร์")
+col5.metric("ราศีเวทิก", vedic_sign, help="ราศีตามโหราศาสตร์เวทิก")
+col6.metric("ตัวเลขกรรม", karma_number, help="ลักษณะกรรมตามวันเกิด")
 
 st.divider()
 col7, col8, col9 = st.columns(3)
-col7.metric("ตัวเลขกรรม", karma_number, 
-           help="ลักษณะกรรมตามวันเกิด")
-col8.metric("ลักษณะโชคชะตา", destiny_trait, 
-           help="ลักษณะโชคชะตาตามเดือนเกิด")
-col9.metric("ทิศทางมงคล", lucky_direction, 
-           help="ทิศทางมงคลตามวันเกิด")
-
-st.divider()
-col10, col11, col12 = st.columns(3)
-col10.metric("พุทธศักราช", buddhist_era, 
-           help="ปีพุทธศักราช")
-col11.metric("ราศีอิสลาม", islamic_sign, 
-           help="ราศีตามระบบอิสลาม")
-col12.metric("นาคษาตรา hindu", hindu_nakshatra, 
-           help="นาคษาตรา hindu ตามวันเกิด")
-
-st.divider()
-col13, col14, col15 = st.columns(3)
-col13.metric("ต้นไม้เซลติก", celtic_tree, 
-           help="ต้นไม้เซลติกตามวันเกิด")
-col14.metric("ราศีญี่ปุ่น", japanese_animal, 
-           help="ราศีตามระบบญี่ปุ่น")
-col15.metric("ราศีอิธิโอเปีย", ethiopian_sign, 
-           help="ราศีตามระบบอิธิโอเปีย")
+col7.metric("ธาตุ", penta_trait, help="คุณลักษณะตามธาตุ")
+col8.metric("โชคชะตา", destiny_trait, help="ลักษณะโชคชะตาตามเดือนเกิด")
+col9.metric("ทิศมงคล", lucky_direction, help="ทิศทางมงคลตามวันเกิด")
 
 # Prediction content generation
 def calculate_accuracy(agreements, total_systems=15):
@@ -559,7 +532,7 @@ else:  # รายเดือน
     period_predictions = generate_time_period_predictions(base_predictions, "monthly")
     period_title = "คำทำนายรายเดือน"
 
-# Display predictions by category for selected time period
+# Display predictions by category for selected time period in a user-friendly way
 st.divider()
 st.subheader(f"🔮 {period_title}")
 
@@ -575,7 +548,7 @@ if num_cols > 0:
             pred_text = period_predictions[category]["prediction"]
             color = period_predictions[category]["color"]
             
-            # Color code based on accuracy
+            # Color code based on accuracy with user-friendly styling
             if color == "success":
                 st.success(f"**{category}**\n\n{pred_text}\n\n.ความสอดคล้องของผลทำนาย: {accuracy}%")
             elif color == "info":
@@ -607,14 +580,14 @@ for category in categories:
 df = pd.DataFrame(accuracy_data)
 st.table(df)
 
-# Detailed predictions by system
+# Detailed predictions by system in a more user-friendly format
 st.divider()
-st.subheader("🔍 คำทำนายโดยละเอียดตามศาสตร์ต่าง ๆ")
+st.subheader("🔍 คำทำนายโดยละเอียดจากแต่ละศาสตร์")
 
 # Show detailed predictions for each category
 for category in categories:
-    with st.expander(f"คำทำนายในหมวด {category}", expanded=False):
-        st.markdown(f"### คำทำนายในหมวด {category}")
+    with st.expander(f"ดูคำทำนายของ {category} จากแต่ละศาสตร์", expanded=False):
+        st.markdown(f"### คำทำนายของ {category} จากแต่ละศาสตร์")
         
         # Generate detailed predictions for this category from different systems
         systems_details = {
@@ -695,7 +668,7 @@ for category in categories:
             }
         }
         
-        # Create a table for detailed predictions
+        # Create a table for detailed predictions with better formatting
         detail_data = []
         for system, details in systems_details.items():
             detail_data.append({
@@ -723,9 +696,16 @@ for category in categories:
         detail_df['confidence_numeric'] = detail_df['ความเชื่อมั่น'].apply(lambda x: int(x.replace('%', '')) if x != 'N/A' else 0)
         detail_df = detail_df.sort_values(by='confidence_numeric', ascending=False).drop('confidence_numeric', axis=1)
         
-        st.dataframe(detail_df)
+        # Display with better formatting
+        for idx, row in detail_df.iterrows():
+            with st.container():
+                st.markdown(f"**{row['ศาสตร์']}**")
+                st.markdown(f"คำทำนาย: {row['คำทำนาย']}")
+                st.markdown(f"คำอธิบาย: {row['คำอธิบาย']}")
+                st.markdown(f"ความเชื่อมั่น: {row['ความเชื่อมั่น']}")
+                st.markdown("---")
 
-# Additional insights
+# Additional insights in a more organized way
 st.divider()
 st.subheader("💎 ข้อมูลเพิ่มเติมจากศาสตร์ต่าง ๆ")
 
@@ -736,16 +716,12 @@ with col1:
     st.markdown(f"**ลักษณะกรรม:** {karma_number}")
     st.markdown(f"**ลักษณะโชคชะตา:** {destiny_trait}")
     st.markdown(f"**ทิศทางมงคล:** {lucky_direction}")
-    st.markdown(f"**พุทธศักราช:** {buddhist_era}")
-    st.markdown(f"**ราศีอิสลาม:** {islamic_sign}")
 
 with col2:
+    st.markdown(f"**พุทธศักราช:** {buddhist_era}")
+    st.markdown(f"**ราศีอิสลาม:** {islamic_sign}")
     st.markdown(f"**นาคษาตรา hindu:** {hindu_nakshatra}")
-    st.markdown(f"**ต้นไม้เซลติก:** {celtic_tree}")
-    st.markdown(f"**ราศีญี่ปุ่น:** {japanese_animal}")
-    st.markdown(f"**ราศีอิธิโอเปีย:** {ethiopian_sign}")
     st.markdown(f"**จำนวนศาสตร์ที่ใช้:** 15 ศาสตร์")
-    st.markdown("**ระบบที่ใช้:** จีน, ตะวันตก, ตัวเลขศาสตร์, ดวงจันทร์, เวทิก, กรรม, ธาตุ, โชคชะตา, ทิศทาง, พุทธ, อิสลาม, hindu, เซลติก, ญี่ปุ่น, อิธิโอเปีย")
 
 # Footer
 st.divider()
