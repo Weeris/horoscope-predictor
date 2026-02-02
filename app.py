@@ -21,7 +21,7 @@ with col1:
     st.subheader("ข้อมูลวันเกิด")
     current_year = datetime.now().year
     start_year = current_year - 100
-    birth_year = st.selectbox("ปีเกิด", options=range(current_year, start_year - 1, -1), index=25)
+    birth_year = st.selectbox("ปีเกิด (ค.ศ.)", options=range(current_year, start_year - 1, -1), index=25)
     birth_month = st.selectbox("เดือนเกิด", options=range(1, 13), format_func=lambda x: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
                                                                                           'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'][x-1])
     
@@ -48,7 +48,7 @@ with col1:
 
 with col2:
     st.markdown("### เกี่ยวกับวันเกิดของคุณ")
-    st.write(f"**วันที่เลือก:** {birth_date.strftime('%d %B พ.ศ. %Y')}")
+    st.write(f"**วันที่เลือก:** {birth_date.strftime('%d %B %Y')}")  # Show AD year
     age = (datetime.now().date() - birth_date).days // 365
     st.write(f"**อายุโดยประมาณ:** {age} ปี")
 
@@ -173,7 +173,7 @@ def get_islamic_zodiac(day, month):
         (5, 13, "แมงป้อง"), (5, 23, "คนคู่"), (6, 14, "ธนู"), (6, 24, "แพะ"),
         (7, 15, "แมว"), (7, 25, "น้ำ"), (8, 15, "ปลา"), (8, 25, "แกะ"),
         (9, 16, "วัว"), (9, 26, "คนคู่"), (10, 17, "ปู"), (10, 27, "สิงโต"),
-        (11, 17, "กุหลาบ"), (11, 27, "หญิงสาว"), (12, 18, "ดุลย์"), (12, 28, "แมงป้อง")
+        (11, 17, "กุหลาบ"), (11, 27, "หญิงสาว"), (12, 18, "ดุลย์"), (12, 28, "แมงปอง")
     ]
     
     for sign_day, sign_month, sign_name in islamic_signs:
