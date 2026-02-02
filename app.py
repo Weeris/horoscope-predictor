@@ -1342,7 +1342,13 @@ with col1:
     st.markdown(f"**{texts['lucky_direction']}:** {lucky_direction}")
 
 with col2:
-    st.markdown(f"**Buddhist Era**" if st.session_state.language == 'en' else "**พุทธศักราช**" if st.session_state.language == 'th' else "**佛历**"): {buddhist_era}")
+    if st.session_state.language == 'en':
+        era_label = "**Buddhist Era**"
+    elif st.session_state.language == 'th':
+        era_label = "**พุทธศักราช**"
+    else:  # zh
+        era_label = "**佛历**"
+    st.markdown(f"{era_label}: {buddhist_era}")
     st.markdown(f"**{texts['islamic_zodiac']}:** {islamic_sign}")
     st.markdown(f"**{texts['hindu_nakshatra']}:** {hindu_nakshatra}")
     st.markdown(f"**Systems Used:** 15" if st.session_state.language == 'en' else "**จำนวนศาสตร์ที่ใช้:** 15 ศาสตร์" if st.session_state.language == 'th' else "**使用系统:** 15个系统")
