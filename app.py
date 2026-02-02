@@ -6,27 +6,24 @@ import random
 import math
 
 # Title and description
-st.set_page_config(page_title="Multi-System Horoscope Predictor", layout="wide")
-st.title("🔮 Multi-System Horoscope Predictor")
+st.set_page_config(page_title="โปรแกรมทำนายดวงชะตาหลายระบบ", layout="wide")
+st.title("🔮 โปรแกรมทำนายดวงชะตาหลายระบบ")
 st.markdown("""
-Welcome to the ultimate horoscope experience! Enter your birth date and receive personalized predictions
-based on multiple divination systems including Chinese Zodiac, Western Astrology, Numerology, and Moon Sign.
+ยินดีต้อนรับสู่ประสบการณ์การทำนายดวงชะตาที่สมบูรณ์แบบ! กรุณาใส่วันเกิดของคุณเพื่อรับคำทำนายส่วนบุคคล
+โดยใช้ระบบการพยากรณ์หลายแบบรวมถึงราศีจีน โหราศาสตร์ตะวันตก ตัวเลขศาสตร์ และดวงจันทร์
 """)
 
 # User input section
 col1, col2 = st.columns(2)
 
-# Create a list of dates from 100 years ago to today
-current_year = datetime.now().year
-start_year = current_year - 100
-all_dates = [datetime(start_year + i, 1, 1) for i in range(101)]  # 101 years from start_year to current year
-
 # Create a more user-friendly date selection
 with col1:
-    st.subheader("Birth Information")
-    birth_year = st.selectbox("Birth Year", options=range(current_year, start_year - 1, -1), index=25)
-    birth_month = st.selectbox("Birth Month", options=range(1, 13), format_func=lambda x: ['January', 'February', 'March', 'April', 'May', 'June', 
-                                                                                          'July', 'August', 'September', 'October', 'November', 'December'][x-1])
+    st.subheader("ข้อมูลวันเกิด")
+    current_year = datetime.now().year
+    start_year = current_year - 100
+    birth_year = st.selectbox("ปีเกิด", options=range(current_year, start_year - 1, -1), index=25)
+    birth_month = st.selectbox("เดือนเกิด", options=range(1, 13), format_func=lambda x: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
+                                                                                          'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'][x-1])
     
     # Determine the number of days in the selected month
     if birth_month in [1, 3, 5, 7, 8, 10, 12]:
@@ -40,7 +37,7 @@ with col1:
         else:
             max_day = 28
     
-    birth_day = st.selectbox("Birth Day", options=range(1, max_day + 1))
+    birth_day = st.selectbox("วันเกิด", options=range(1, max_day + 1))
 
     # Create the birth date from selected components
     try:
@@ -50,16 +47,16 @@ with col1:
         birth_date = datetime(birth_year, 2, 28).date()  # Default to Feb 28
 
 with col2:
-    st.markdown("### About Your Birth Date")
-    st.write(f"**Selected Date:** {birth_date.strftime('%B %d, %Y')}")
+    st.markdown("### เกี่ยวกับวันเกิดของคุณ")
+    st.write(f"**วันที่เลือก:** {birth_date.strftime('%d %B พ.ศ. %Y')}")
     age = (datetime.now().date() - birth_date).days // 365
-    st.write(f"**Approximate Age:** {age} years")
+    st.write(f"**อายุโดยประมาณ:** {age} ปี")
 
 # Calculate astrological information
 def get_chinese_zodiac(year):
-    animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", 
-               "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"]
-    elements = ["Metal", "Water", "Wood", "Fire", "Earth"]  # Cycles every 2 years
+    animals = ["หนู", "วัว", "เสือ", "กระ rabbit", "มังกร", "งู", 
+               "ม้า", "แพะ", "ลิง", "ไก่", "สุนัข", "หมู"]
+    elements = ["โลหะ", "น้ำ", "ไม้", "ไฟ", "ดิน"]  # Cycles every 2 years
     
     animal_index = (year - 4) % 12
     element_index = ((year - 4) // 2) % 5
@@ -68,21 +65,21 @@ def get_chinese_zodiac(year):
 
 def get_western_sign(month, day):
     signs = [
-        (1, 20, "Capricorn"), (2, 19, "Aquarius"), (3, 21, "Pisces"),
-        (4, 20, "Aries"), (5, 21, "Taurus"), (6, 21, "Gemini"),
-        (7, 23, "Cancer"), (8, 23, "Leo"), (9, 23, "Virgo"),
-        (10, 23, "Libra"), (11, 22, "Scorpio"), (12, 22, "Sagittarius"),
-        (12, 31, "Capricorn")
+        (1, 20, "มังกร"), (2, 19, "กุมภ์"), (3, 21, "มีน"),
+        (4, 20, "เมษ"), (5, 21, "พฤษภ"), (6, 21, "เมถุน"),
+        (7, 23, "กรกฎ"), (8, 23, "สิงห์"), (9, 23, "กันย์"),
+        (10, 23, "ตุลย์"), (11, 22, "พิจิก"), (12, 22, "ธนู"),
+        (12, 31, "มังกร")
     ]
     
     for sign_month, sign_day, sign_name in signs:
         if month == sign_month and day <= sign_day:
             return sign_name
         elif month == 12 and day > 22:  # Capricorn spans year boundary
-            return "Capricorn"
+            return "มังกร"
     
     # Fallback
-    return "Capricorn"
+    return "มังกร"
 
 def get_life_path_number(birth_date):
     # Calculate life path number from birth date
@@ -98,18 +95,18 @@ def get_life_path_number(birth_date):
 def get_moon_sign(day, month):
     # Simplified moon sign calculation (approximate)
     moon_signs = [
-        (1, 20, "Sagittarius"), (2, 19, "Capricorn"), (3, 21, "Aquarius"),
-        (4, 20, "Pisces"), (5, 21, "Aries"), (6, 21, "Taurus"),
-        (7, 23, "Gemini"), (8, 23, "Cancer"), (9, 23, "Leo"),
-        (10, 23, "Virgo"), (11, 22, "Libra"), (12, 22, "Scorpio"),
-        (12, 31, "Sagittarius")
+        (1, 20, "ธนู"), (2, 19, "มังกร"), (3, 21, "กุมภ์"),
+        (4, 20, "มีน"), (5, 21, "เมษ"), (6, 21, "พฤษภ"),
+        (7, 23, "เมถุน"), (8, 23, "กรกฎ"), (9, 23, "สิงห์"),
+        (10, 23, "กันย์"), (11, 22, "ตุลย์"), (12, 22, "พิจิก"),
+        (12, 31, "ธนู")
     ]
     
     for sign_month, sign_day, sign_name in moon_signs:
         if month == sign_month and day <= sign_day:
             return sign_name
     
-    return "Sagittarius"
+    return "ธนู"
 
 # Calculate user's astrological data
 chinese_animal, chinese_element = get_chinese_zodiac(birth_date.year)
@@ -119,74 +116,74 @@ moon_sign = get_moon_sign(birth_date.day, birth_date.month)
 
 # Display calculated information
 st.divider()
-st.subheader("Your Astrological Profile")
+st.subheader("โพรไฟล์ทางดาราศาสตร์ของคุณ")
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Chinese Zodiac", f"{chinese_animal}\n({chinese_element})", 
-           help="Based on your birth year")
-col2.metric("Western Sign", western_sign, 
-           help="Sun sign based on your birth date")
-col3.metric("Life Path", life_path, 
-           help="Numerology life path number")
-col4.metric("Moon Sign", moon_sign, 
-           help="Approximate moon sign")
+col1.metric("ราศีจีน", f"{chinese_animal}\n({chinese_element})", 
+           help="จากปีเกิดของคุณ")
+col2.metric("ราศีตะวันตก", western_sign, 
+           help="ราศีดวงอาทิตย์ตามวันเกิดของคุณ")
+col3.metric("เส้นทางชีวิต", life_path, 
+           help="ตัวเลขศาสตร์เส้นทางชีวิต")
+col4.metric("ราศีจันทร์", moon_sign, 
+           help="ราศีจันทร์โดยประมาณ")
 
 # Prediction content generation
 def generate_daily_prediction(sign, animal, element, life_path_num, moon_sign):
     # General daily themes
     themes = [
-        "Love & Relationships", "Career & Finance", "Health & Wellness", 
-        "Spiritual Growth", "Adventure & Exploration", "Family & Friends",
-        "Creativity & Arts", "Learning & Knowledge", "Travel & Movement", "Rest & Relaxation"
+        "ความรักและ отношения", "งานและการเงิน", "สุขภาพและความเป็นอยู่", 
+        "การเติบโตทางจิตวิญญาณ", "การผจญภัยและการสำรวจ", "ครอบครัวและเพื่อนฝูง",
+        "ความคิดสร้างสรรค์และศิลปะ", "การเรียนรู้และองค์ความรู้", "การเดินทางและการเคลื่อนไหว", "การพักผ่อนและการผ่อนคลาย"
     ]
     
     # Positive and challenging aspects
     positive_aspects = [
-        "You'll feel particularly energetic today.",
-        "A new opportunity may present itself.",
-        "Your intuition is especially strong today.",
-        "Financial matters look promising.",
-        "Social connections bring joy.",
-        "Creative inspiration flows easily.",
-        "Physical energy is at its peak.",
-        "Mental clarity enhances decision-making.",
-        "Unexpected support comes from friends.",
-        "Inner peace is easily attainable."
+        "คุณจะรู้สึกมีพลังงานพิเศษในวันนี้",
+        "โอกาสใหม่ ๆ อาจปรากฏขึ้น",
+        "สัญชาตญาณของคุณแรงเป็นพิเศษในวันนี้",
+        "เรื่องการเงินดูดีมีแนวโน้ม",
+        "ความสัมพันธ์ทางสังคมนำความสุขมาให้",
+        "แรงบันดาลใจด้านความคิดสร้างสรรค์ไหลลื่น",
+        "พลังงานทางกายอยู่ในจุดสูงสุด",
+        "ความชัดเจนทางจิตใจช่วยในการตัดสินใจ",
+        "การสนับสนุนที่ไม่คาดคิดมาจากเพื่อน",
+        "สันติภาพภายในหาได้ง่าย"
     ]
     
     challenging_aspects = [
-        "Patience will be tested in certain situations.",
-        "Avoid making hasty financial decisions.",
-        "Emotional sensitivity might be heightened.",
-        "Communication challenges may arise.",
-        "Energy levels might fluctuate.",
-        "Overthinking could cloud judgment.",
-        "Social interactions require extra patience.",
-        "Physical fatigue might set in earlier.",
-        "External pressures feel overwhelming.",
-        "Conflicting priorities demand attention."
+        "ความอดทนจะถูกทดสอบในบางสถานการณ์",
+        "หลีกเลี่ยงการตัดสินใจทางการเงินอย่างเร่งรีบ",
+        "ความไวทางอารมณ์อาจเพิ่มขึ้น",
+        "อาจเกิดความท้าทายในการสื่อสาร",
+        "ระดับพลังงานอาจผันผวน",
+        "ความคิดมากอาจบดบังการตัดสินใจ",
+        "ต้องใช้ความอดทนเป็นพิเศษกับปฏิสัมพันธ์ทางสังคม",
+        "ความเหนื่อยล้าทางร่างกายอาจเกิดขึ้นเร็วกว่าปกติ",
+        "ความกดดันภายนอกอาจรู้สึกหนักหน่วง",
+        "ลำดับความสำคัญที่ขัดแย้งกันต้องการการแก้ไข"
     ]
     
     # Advice based on numerology
     numerology_advice = {
-        1: "Take initiative and lead with confidence.",
-        2: "Focus on partnerships and collaboration.",
-        3: "Express yourself creatively and joyfully.",
-        4: "Organize and build solid foundations.",
-        5: "Embrace change and new experiences.",
-        6: "Nurture relationships and family bonds.",
-        7: "Seek solitude for reflection and wisdom.",
-        8: "Focus on material success and abundance.",
-        9: "Complete old cycles and prepare for renewal.",
-        11: "Trust your spiritual intuition today.",
-        22: "Large-scale projects may see breakthroughs.",
-        33: "Healing and nurturing others brings fulfillment."
+        1: "เริ่มดำเนินการและนำด้วยความมั่นใจ",
+        2: "เน้นความร่วมมือและความสัมพันธ์",
+        3: "แสดงออกอย่างสร้างสรรค์และเต็มไปด้วยความสุข",
+        4: "จัดระเบียบและสร้างรากฐานที่มั่นคง",
+        5: "เปิดรับการเปลี่ยนแปลงและประสบการณ์ใหม่",
+        6: "ดูแลความสัมพันธ์และพันธะในครอบครัว",
+        7: "แสวงหาความโดดเดี่ยวเพื่อการสะท้อนความรู้",
+        8: "เน้นความสำเร็จทางวัตถุและทรัพย์สิน",
+        9: "ปิดรอบเก่าและเตรียมตัวสำหรับการฟื้นฟูใหม่",
+        11: "เชื่อถือสัญชาตญาณจิตวิญญาณของคุณในวันนี้",
+        22: "โครงการขนาดใหญ่อาจได้เห็นความก้าวหน้า",
+        33: "การเยียวยาและการดูแลผู้อื่นนำความพึงพอใจมาให้"
     }
     
     theme = random.choice(themes)
     positive = random.choice(positive_aspects)
     challenging = random.choice(challenging_aspects)
-    advice = numerology_advice.get(life_path_num, "Pay attention to your inner wisdom.")
+    advice = numerology_advice.get(life_path_num, "ให้ความสนใจกับความรู้ภายในของคุณ")
     
     return {
         "theme": theme,
@@ -197,35 +194,35 @@ def generate_daily_prediction(sign, animal, element, life_path_num, moon_sign):
 
 def generate_weekly_prediction(sign, animal, element, life_path_num, moon_sign):
     weekly_themes = [
-        "Professional Development", "Relationship Building", "Self-Care Focus",
-        "Financial Planning", "Creative Projects", "Learning New Skills",
-        "Home & Family Matters", "Health & Fitness", "Spiritual Practice", "Social Activities"
+        "การพัฒนาอาชีพ", "การสร้างความสัมพันธ์", "การโฟกัสดูแลตนเอง",
+        "การวางแผนทางการเงิน", "โครงการสร้างสรรค์", "การเรียนรู้ทักษะใหม่",
+        "เรื่องบ้านและครอบครัว", "สุขภาพและฟิตเนส", "การปฏิบัติทางจิตวิญญาณ", "กิจกรรมทางสังคม"
     ]
     
     focus_areas = [
-        "Career advancement opportunities may emerge mid-week.",
-        "Relationships take center stage, especially with family.",
-        "Personal health and wellness deserve attention.",
-        "Financial planning and budgeting become crucial.",
-        "Creative projects see significant progress.",
-        "Learning something new brings satisfaction.",
-        "Home improvements or family gatherings occur.",
-        "Physical activity enhances mental well-being.",
-        "Spiritual practices bring clarity and peace.",
-        "Social connections strengthen through shared activities."
+        "โอกาสในการก้าวหน้าทางอาชีพอาจปรากฏในช่วงกลางสัปดาห์",
+        "ความสัมพันธ์กลายเป็นศูนย์กลาง โดยเฉพาะกับครอบครัว",
+        "สุขภาพและความเป็นอยู่ของคุณสมควรได้รับความสนใจ",
+        "การวางแผนและการทำงบประมาณกลายเป็นสิ่งสำคัญ",
+        "โครงการสร้างสรรค์เห็นความคืบหน้าอย่างมาก",
+        "การเรียนรู้สิ่งใหม่ๆ นำความพึงพอใจมาให้",
+        "การปรับปรุงบ้านหรือการพบปะครอบครัวเกิดขึ้น",
+        "กิจกรรมทางกายภาพเสริมสร้างสุขภาพจิต",
+        "การปฏิบัติทางจิตวิญญาณนำความชัดเจนและสันติภาพ",
+        "การเชื่อมโยงทางสังคมมั่นคงขึ้นจากการทำกิจกรรมร่วมกัน"
     ]
     
     challenges = [
-        "Balancing work and personal life requires effort.",
-        "Unexpected expenses might arise.",
-        "Time management becomes challenging.",
-        "Interpersonal conflicts need addressing.",
-        "Energy levels fluctuate throughout the week.",
-        "Decision-making feels more difficult.",
-        "External obligations compete for your time.",
-        "Health concerns might surface.",
-        "Communication barriers appear with loved ones.",
-        "Technology issues disrupt plans."
+        "การบาลานซ์ระหว่างงานและชีวิตส่วนตัวต้องใช้ความพยายาม",
+        "ค่าใช้จ่ายที่ไม่คาดคิดอาจเกิดขึ้น",
+        "การบริหารเวลาเป็นเรื่องท้าทายมากขึ้น",
+        "ความขัดแย้งระหว่างบุคคลต้องได้รับการแก้ไข",
+        "ระดับพลังงานผันผวนตลอดสัปดาห์",
+        "การตัดสินใจรู้สึกยากกว่าปกติ",
+        "ภาระผูกพันภายนอกแข่งขันเพื่อเวลาของคุณ",
+        "อาจมีปัญหาสุขภาพผุดขึ้น",
+        "อุปสรรคในการสื่อสารปรากฏกับคนที่คุณรัก",
+        "ปัญหาเทคโนโลยีรบกวนแผนการ"
     ]
     
     theme = random.choice(weekly_themes)
@@ -240,35 +237,35 @@ def generate_weekly_prediction(sign, animal, element, life_path_num, moon_sign):
 
 def generate_monthly_prediction(sign, animal, element, life_path_num, moon_sign):
     monthly_themes = [
-        "Major Life Changes", "Financial Growth", "Relationship Deepening",
-        "Career Advancement", "Personal Transformation", "Health Improvements",
-        "Travel Opportunities", "Educational Pursuits", "Creative Expression", "Spiritual Awakening"
+        "การเปลี่ยนแปลงชีวิตครั้งใหญ่", "การเติบโตทางการเงิน", "การลึกซึ้งในความสัมพันธ์",
+        "การก้าวหน้าในสายอาชีพ", "การเปลี่ยนแปลงส่วนตัว", "การปรับปรุงสุขภาพ",
+        "โอกาสการเดินทาง", "การแสวงหาการศึกษา", "การแสดงออกเชิงสร้างสรรค์", "การตื่นรู้ทางจิตวิญญาณ"
     ]
     
     opportunities = [
-        "A significant opportunity related to your career presents itself.",
-        "Financial investments show positive returns.",
-        "Relationships deepen and become more meaningful.",
-        "Professional recognition comes your way.",
-        "Personal growth reaches a new milestone.",
-        "Health improvements become noticeable.",
-        "Travel opportunities expand your perspective.",
-        "Learning new skills proves valuable.",
-        "Creative talents receive recognition.",
-        "Spiritual understanding deepens significantly."
+        "โอกาสสำคัญที่เกี่ยวข้องกับอาชีพของคุณปรากฏขึ้น",
+        "การลงทุนทางการเงินแสดงผลตอบแทนเชิงบวก",
+        "ความสัมพันธ์ลึกซึ้งและมีความหมายมากขึ้น",
+        "การยอมรับในระดับวิชาชีพมาถึงคุณ",
+        "การเติบโตส่วนบุคคลมาถึงระดับใหม่",
+        "การปรับปรุงสุขภาพสามารถมองเห็นได้",
+        "โอกาสการเดินทางขยายมุมมองของคุณ",
+        "การเรียนรู้ทักษะใหม่พิสูจน์ว่ามีค่า",
+        "ความสามารถด้านความคิดสร้างสรรค์ได้รับการยอมรับ",
+        "ความเข้าใจทางจิตวิญญาณลึกซึ้งขึ้นอย่างมาก"
     ]
     
     cautions = [
-        "Avoid impulsive decisions regarding finances.",
-        "Be patient with relationship developments.",
-        "Don't overcommit to multiple projects.",
-        "Maintain balance between work and rest.",
-        "Take time for self-care and reflection.",
-        "Avoid unnecessary risks in investments.",
-        "Prepare thoroughly for travel plans.",
-        "Set realistic expectations for learning.",
-        "Protect your creative energy from criticism.",
-        "Don't force spiritual experiences."
+        "หลีกเลี่ยงการตัดสินใจที่ประมาทเกี่ยวกับการเงิน",
+        "อดทนกับการพัฒนาความสัมพันธ์",
+        "อย่ารับภาระหลายโครงการเกินไป",
+        "รักษาสมดุลระหว่างงานและเวลาพักผ่อน",
+        "ใช้เวลาสำหรับการดูแลตนเองและการสะท้อน",
+        "หลีกเลี่ยงความเสี่ยงที่ไม่จำเป็นในการลงทุน",
+        "เตรียมตัวอย่างละเอียดสำหรับแผนการเดินทาง",
+        "ตั้งเป้าหมายที่สมจริงสำหรับการเรียนรู้",
+        "ปกป้องพลังงานสร้างสรรค์ของคุณจากการวิจารณ์",
+        "อย่าบังคับประสบการณ์ทางจิตวิญญาณ"
     ]
     
     theme = random.choice(monthly_themes)
@@ -288,49 +285,49 @@ monthly_pred = generate_monthly_prediction(western_sign, chinese_animal, chinese
 
 # Display predictions
 st.divider()
-st.subheader("🔮 Daily Horoscope")
-st.markdown(f"**Theme of the Day:** {daily_pred['theme']}")
+st.subheader("🔮 ดวงประจำวัน")
+st.markdown(f"**ธีมของวัน:** {daily_pred['theme']}")
 st.success(f"✨ {daily_pred['positive']}")
 st.warning(f"⚠️ {daily_pred['challenging']}")
-st.info(f"💡 Numerology Insight: {daily_pred['advice']}")
+st.info(f"💡 ข้อมูลจากตัวเลขศาสตร์: {daily_pred['advice']}")
 
 st.divider()
-st.subheader("📅 Weekly Forecast")
-st.markdown(f"**Weekly Theme:** {weekly_pred['theme']}")
-st.success(f"🎯 Focus Area: {weekly_pred['focus']}")
-st.warning(f"⚠️ Potential Challenge: {weekly_pred['challenge']}")
+st.subheader("📅 ทำนายรายสัปดาห์")
+st.markdown(f"**ธีมรายสัปดาห์:** {weekly_pred['theme']}")
+st.success(f"🎯 พื้นที่โฟกัส: {weekly_pred['focus']}")
+st.warning(f"⚠️ ความท้าทายที่อาจเกิดขึ้น: {weekly_pred['challenge']}")
 
 st.divider()
-st.subheader("🌙 Monthly Outlook")
-st.markdown(f"**Monthly Theme:** {monthly_pred['theme']}")
-st.success(f"🌟 Opportunity: {monthly_pred['opportunity']}")
-st.warning(f"⚠️ Caution: {monthly_pred['caution']}")
+st.subheader("🌙 ภาพรวมรายเดือน")
+st.markdown(f"**ธีมรายเดือน:** {monthly_pred['theme']}")
+st.success(f"🌟 โอกาส: {monthly_pred['opportunity']}")
+st.warning(f"⚠️ ข้อควรระวัง: {monthly_pred['caution']}")
 
 # Personalized recommendations
 st.divider()
-st.subheader("💎 Personalized Recommendations")
+st.subheader("💎 คำแนะนำส่วนบุคคล")
 
 # Based on combination of factors
 recommendations = []
 
 if life_path in [1, 8, 9]:
-    recommendations.append("Today is perfect for leadership roles and taking charge of projects.")
+    recommendations.append("วันนี้เหมาะสำหรับบทบาทผู้นำและการควบคุมโครงการต่าง ๆ")
 elif life_path in [2, 6]:
-    recommendations.append("Focus on relationships and collaborative efforts.")
+    recommendations.append("ให้ความสำคัญกับความสัมพันธ์และความพยายามร่วมมือ")
 
-if western_sign in ["Aries", "Leo", "Sagittarius"]:
-    recommendations.append("Your fiery energy is best channeled into physical activities.")
-elif western_sign in ["Cancer", "Scorpio", "Pisces"]:
-    recommendations.append("Your intuitive abilities are heightened today.")
+if western_sign in ["เมษ", "สิงห์", "ธนู"]:
+    recommendations.append("พลังงานอันกล้าหาญของคุณเหมาะที่สุดสำหรับกิจกรรมทางกายภาพ")
+elif western_sign in ["กรกฎ", "พิจิก", "มีน"]:
+    recommendations.append("ความสามารถในการรู้แจ้งของคุณเพิ่มขึ้นในวันนี้")
 
-if chinese_animal in ["Dragon", "Tiger", "Horse"]:
-    recommendations.append("Take bold steps toward your goals - your courage will be rewarded.")
-elif chinese_animal in ["Rabbit", "Goat", "Pig"]:
-    recommendations.append("Gentle approaches and artistic pursuits will serve you well.")
+if chinese_animal in ["มังกร", "เสือ", "ม้า"]:
+    recommendations.append("ก้าวไปข้างหน้าอย่างกล้าหาญ toward เป้าหมายของคุณ - ความกล้าหาญของคุณจะได้รับรางวัล")
+elif chinese_animal in ["กระต่าย", "แพะ", "หมู"]:
+    recommendations.append("แนวทางอ่อนโยนและการแสวงหาศิลปะจะเป็นประโยชน์กับคุณมาก")
 
 for rec in recommendations:
     st.markdown(f"- {rec}")
 
 # Footer
 st.divider()
-st.markdown("*Remember: These predictions are for entertainment purposes. Use them as guidance, not absolute truth.*")
+st.markdown("*โปรดจำไว้ว่า: การทำนายเหล่านี้มีไว้เพื่อความบันเทิง ใช้เป็นแนวทาง ไม่ใช่ความจริงสัมบูรณ์*")
