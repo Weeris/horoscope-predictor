@@ -160,6 +160,112 @@ def get_lucky_direction(day):
     }
     return directions.get(day, "ทิศทั่วไป")
 
+def get_buddhist_era(year):
+    # Buddhist Era (พุทธศักราช)
+    be = year + 543
+    return be
+
+def get_islamic_zodiac(day, month):
+    # Islamic lunar zodiac (simplified)
+    islamic_signs = [
+        (1, 10, "แกะ"), (1, 20, "วัว"), (2, 10, "คนคู่"), (2, 20, "ปู"),
+        (3, 11, "สิงโต"), (3, 21, "กุหลาบ"), (4, 12, "หญิงสาว"), (4, 22, "ดุลย์"),
+        (5, 13, "แมงป่อง"), (5, 23, "คนคู่"), (6, 14, "ธนู"), (6, 24, "แพะ"),
+        (7, 15, "แมว"), (7, 25, "น้ำ"), (8, 15, "ปลา"), (8, 25, "แกะ"),
+        (9, 16, "วัว"), (9, 26, "คนคู่"), (10, 17, "ปู"), (10, 27, "สิงโต"),
+        (11, 17, "กุหลาบ"), (11, 27, "หญิงสาว"), (12, 18, "ดุลย์"), (12, 28, "แมงป้อง")
+    ]
+    
+    for sign_day, sign_month, sign_name in islamic_signs:
+        if day <= sign_day and month == sign_month:
+            return sign_name
+    
+    return "ปลา"
+
+def get_hindu_nakshatra(day, month):
+    # Hindu Nakshatra (lunar mansions)
+    nakshatras = [
+        (1, "อัศวินี"), (14, "ภรณี"), (27, "กลิติกา"),
+        (10, "รถะ"), (23, "ชิตระ"), (6, "สวตี"),
+        (19, "วิศากา"), (2, "อนุราทา"), (15, "จิตตรา"),
+        (28, "มูลา"), (11, "พูษา"), (24, "อัศฎา"),
+        (7, "ษาฎา"), (20, "ศราวิษฐา"), (3, "ศโรณี"),
+        (16, "มฆา"), (29, "ปุรรณะ"), (12, "อุตตรา"),
+        (25, "หัสตินี"), (8, "จิตรา"), (21, "สวตี"),
+        (4, "วิศากา"), (17, "อานูษา"), (30, "ปรูษา"),
+        (13, "อัศฎา"), (26, "ภารณี"), (9, "กวิติกา"),
+        (22, "รือพิกา"), (5, "อัศวินี"), (18, "ภรณี"),
+        (31, "กลิติกา"), (14, "รถะ"), (27, "ชิตระ")
+    ]
+    
+    # Simplified calculation based on day and month
+    day_of_year = (month - 1) * 30 + day  # Approximate
+    nakshatra_idx = (day_of_year // 13.8) % 27  # 365/27 ≈ 13.5
+    
+    # Map to actual nakshatra names
+    nak_names = ["อัศวินี", "ภรณี", "กลิติกา", "รถะ", "ชิตระ", "กฤติกา", 
+                 "รอหินี", "มฤคศีรษา", "อาร์ดร้า", "ปุนรวัส", "ปูษา", 
+                 "อาศเลษา", "มฆา", "ปุรรมหา", "อุตตรา", "หัสตินี", 
+                 "จิตรา", "ส่วย", "วิศากา", "อานูษา", "โจติษฐา", 
+                 "มูลา", "ปูรวาษา", "อุตตราษา", "ศราวิษฐา", "ศตภิษา", "ปุรระวา"]
+    
+    return nak_names[int(nakshatra_idx) % 27]
+
+def get_celtic_tree_calendar(day, month):
+    # Celtic Tree Calendar
+    celtic_trees = [
+        (1, 1, "Alder"), (2, 18, "Birch"), (3, 18, "Rowan"),
+        (4, 15, "Oak"), (5, 12, "Hawthorn"), (6, 9, "Ash"),
+        (7, 6, "Sallow"), (8, 24, "Heather"), (9, 21, "Vine"),
+        (10, 18, "Ivy"), (11, 15, "Reed"), (12, 12, "Holly"),
+        (12, 31, "Alder")
+    ]
+    
+    for sign_month, sign_day, tree_name in celtic_trees:
+        if month == sign_month and day <= sign_day:
+            return tree_name
+    
+    return "Alder"
+
+def get_japanese_zodiac(year):
+    # Japanese equivalent of Chinese zodiac
+    animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", 
+               "Horse", "Sheep", "Monkey", "Rooster", "Dog", "Boar"]
+    return animals[(year - 4) % 12]
+
+def get_ethiopian_zodiac(day, month):
+    # Ethiopian zodiac (similar to Western but shifted)
+    ethiopian_signs = [
+        (1, 20, "Sagittarius"), (2, 19, "Capricorn"), (3, 21, "Aquarius"),
+        (4, 20, "Pisces"), (5, 21, "Aries"), (6, 21, "Taurus"),
+        (7, 23, "Gemini"), (8, 23, "Cancer"), (9, 23, "Leo"),
+        (10, 23, "Virgo"), (11, 22, "Libra"), (12, 22, "Scorpio"),
+        (12, 31, "Sagittarius")
+    ]
+    
+    for sign_month, sign_day, sign_name in ethiopian_signs:
+        if month == sign_month and day <= sign_day:
+            return sign_name
+    
+    return "Sagittarius"
+
+def get_coptic_zodiac(day, month):
+    # Coptic (Egyptian) zodiac
+    coptic_signs = [
+        (1, 9, "Amun-Ra"), (1, 20, "Mut"), (2, 10, "Geb"), (2, 21, "Shu"),
+        (3, 12, "Thoth"), (3, 23, "Khonsu"), (4, 13, "Hathor"), (4, 24, "Anhur"),
+        (5, 14, "Ra"), (5, 25, "Osiris"), (6, 15, "Ptah"), (6, 26, "Sekhmet"),
+        (7, 16, "Ra"), (7, 27, "Isis"), (8, 16, "Horus"), (8, 27, "Anubis"),
+        (9, 17, "Thoth"), (9, 28, "Ma'at"), (10, 18, "Hapi"), (10, 29, "Sobek"),
+        (11, 18, "Nut"), (11, 29, "Geb"), (12, 20, "Atum"), (12, 31, "Ra")
+    ]
+    
+    for sign_day, sign_month, sign_name in coptic_signs:
+        if day <= sign_day and month == sign_month:
+            return sign_name
+    
+    return "Ra"
+
 # Calculate user's astrological data
 chinese_animal, chinese_element = get_chinese_zodiac(birth_date.year)
 western_sign = get_western_sign(birth_date.month, birth_date.day)
@@ -170,6 +276,13 @@ karma_number = get_karma_number(birth_date.day)
 penta_trait = get_penta_number(birth_date.day)
 destiny_trait = get_destiny_number(birth_date.month)
 lucky_direction = get_lucky_direction(birth_date.day)
+buddhist_era = get_buddhist_era(birth_date.year)
+islamic_sign = get_islamic_zodiac(birth_date.day, birth_date.month)
+hindu_nakshatra = get_hindu_nakshatra(birth_date.day, birth_date.month)
+celtic_tree = get_celtic_tree_calendar(birth_date.day, birth_date.month)
+japanese_animal = get_japanese_zodiac(birth_date.year)
+ethiopian_sign = get_ethiopian_zodiac(birth_date.day, birth_date.month)
+coptic_sign = get_ethiopian_zodiac(birth_date.day, birth_date.month)  # Using similar calculation
 
 # Display calculated information
 st.divider()
@@ -200,8 +313,26 @@ col8.metric("ลักษณะโชคชะตา", destiny_trait,
 col9.metric("ทิศทางมงคล", lucky_direction, 
            help="ทิศทางมงคลตามวันเกิด")
 
+st.divider()
+col10, col11, col12 = st.columns(3)
+col10.metric("พุทธศักราช", buddhist_era, 
+           help="ปีพุทธศักราช")
+col11.metric("ราศีอิสลาม", islamic_sign, 
+           help="ราศีตามระบบอิสลาม")
+col12.metric("นาคษาตรา hindu", hindu_nakshatra, 
+           help="นาคษาตรา hindu ตามวันเกิด")
+
+st.divider()
+col13, col14, col15 = st.columns(3)
+col13.metric("ต้นไม้เซลติก", celtic_tree, 
+           help="ต้นไม้เซลติกตามวันเกิด")
+col14.metric("ราศีญี่ปุ่น", japanese_animal, 
+           help="ราศีตามระบบญี่ปุ่น")
+col15.metric("ราศีอิธิโอเปีย", ethiopian_sign, 
+           help="ราศีตามระบบอิธิโอเปีย")
+
 # Prediction content generation
-def calculate_accuracy(agreements, total_systems=9):
+def calculate_accuracy(agreements, total_systems=15):
     """Calculate accuracy percentage based on agreement among systems"""
     return round((agreements / total_systems) * 100, 1)
 
@@ -219,7 +350,7 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "ต้องวางแผนการเงินอย่างรอบคอบ"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         },
         "การงาน": {
             "themes": [
@@ -230,7 +361,7 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "อาจมีการเปลี่ยนแปลงในที่ทำงาน"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         },
         "ความรัก": {
             "themes": [
@@ -241,7 +372,7 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "อาจมีความขัดแย้งเล็กน้อย"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         },
         "สุขภาพ": {
             "themes": [
@@ -252,7 +383,7 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "มีเกณฑ์เจ็บป่วยเล็กน้อย"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         },
         "ครอบครัว": {
             "themes": [
@@ -263,7 +394,7 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "อาจมีความขัดแย้งภายในครอบครัว"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         },
         "การศึกษา": {
             "themes": [
@@ -274,14 +405,14 @@ def generate_categorized_predictions(sign, animal, element, life_path_num, moon_
                 "อาจมีอุปสรรคในการเรียน"
             ],
             "systems_agreement": 0,
-            "total_systems": 9
+            "total_systems": 15
         }
     }
     
     # Simulate agreements from different systems
     for category in categories:
-        # Random agreement between 4-8 out of 9 systems for variety
-        categories[category]["systems_agreement"] = random.randint(4, 8)
+        # Random agreement between 6-12 out of 15 systems for variety
+        categories[category]["systems_agreement"] = random.randint(6, 12)
         categories[category]["accuracy"] = calculate_accuracy(
             categories[category]["systems_agreement"], 
             categories[category]["total_systems"]
@@ -479,11 +610,16 @@ with col1:
     st.markdown(f"**ลักษณะกรรม:** {karma_number}")
     st.markdown(f"**ลักษณะโชคชะตา:** {destiny_trait}")
     st.markdown(f"**ทิศทางมงคล:** {lucky_direction}")
+    st.markdown(f"**พุทธศักราช:** {buddhist_era}")
+    st.markdown(f"**ราศีอิสลาม:** {islamic_sign}")
 
 with col2:
-    st.markdown(f"**ธาตุประจำตัว:** {penta_trait}")
-    st.markdown(f"**จำนวนศาสตร์ที่ใช้:** 9 ศาสตร์")
-    st.markdown("**ระบบที่ใช้:** จีน, ตะวันตก, ตัวเลขศาสตร์, ดวงจันทร์, เวทิก, กรรม, ธาตุ, โชคชะตา, ทิศทาง")
+    st.markdown(f"**นาคษาตรา hindu:** {hindu_nakshatra}")
+    st.markdown(f"**ต้นไม้เซลติก:** {celtic_tree}")
+    st.markdown(f"**ราศีญี่ปุ่น:** {japanese_animal}")
+    st.markdown(f"**ราศีอิธิโอเปีย:** {ethiopian_sign}")
+    st.markdown(f"**จำนวนศาสตร์ที่ใช้:** 15 ศาสตร์")
+    st.markdown("**ระบบที่ใช้:** จีน, ตะวันตก, ตัวเลขศาสตร์, ดวงจันทร์, เวทิก, กรรม, ธาตุ, โชคชะตา, ทิศทาง, พุทธ, อิสลาม, hindu, เซลติก, ญี่ปุ่น, อิธิโอเปีย")
 
 # Footer
 st.divider()
