@@ -1213,19 +1213,6 @@ for category in categories:
 df = pd.DataFrame(accuracy_data)
 st.table(df)
 
-        detail_df['confidence_numeric'] = detail_df['Confidence' if st.session_state.language != 'th' else "ความเชื่อมั่น"].apply(lambda x: int(x.replace('%', '')) if x != 'N/A' else 0)
-        detail_df = detail_df.sort_values(by='confidence_numeric', ascending=False).drop('confidence_numeric', axis=1)
-        
-        # Display with better formatting
-        for idx, row in detail_df.iterrows():
-            with st.container():
-                st.markdown(f"**{row['System' if st.session_state.language != 'th' else 'ศาสตร์' if st.session_state.language == 'th' else '系统']}**")
-                st.markdown(f"**{texts['prediction_label'] if 'prediction_label' in texts else 'Prediction'}:** {row['Prediction' if st.session_state.language != 'th' else 'คำทำนาย' if st.session_state.language == 'th' else '预测']}")
-                st.markdown(f"{texts['explanation_label'] if 'explanation_label' in texts else 'Explanation'}: {row['Explanation' if st.session_state.language != 'th' else 'คำอธิบาย' if st.session_state.language == 'th' else '解释']}")
-                st.markdown(f"{texts['confidence_label'] if 'confidence_label' in texts else 'Confidence'}: {row['Confidence' if st.session_state.language != 'th' else 'ความเชื่อมั่น' if st.session_state.language == 'th' else '信心']}")
-                if row['Confidence' if st.session_state.language != 'th' else 'ความเชื่อมั่น' if st.session_state.language == 'th' else '信心'] != "N/A":
-                    st.markdown(f"*{texts['confidence_explanation']}*")
-                st.markdown("---")
 
 # Additional insights in a more organized way
 st.divider()
