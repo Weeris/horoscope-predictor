@@ -1325,39 +1325,39 @@ for category in categories:
         if st.session_state.language == 'th':
             additional_systems = {
                 "โหราศาสตร์อียิปต์": {
-                    "prediction": f"โหราศาสตร์อียิปต์ทำนายว่าด้าน {category} จะมีลักษณะเป็น...",
-                    "explanation": f"เกิดจากอิทธิพลของเทพเจ้าอียิปต์โบราณที่มีผลต่อด้าน {category}",
+                    "prediction": f"โหราศาสตร์อียิปต์โบราณทำนายว่าด้าน {category} ของคุณจะมีลักษณะเป็นอย่างไรในช่วงนี้",
+                    "explanation": f"เกิดจากอิทธิพลของเทพเจ้าอียิปต์โบราณที่ส่งผลต่อด้าน {category} ตามวันเกิดของคุณ",
                     "confidence": random.randint(60, 85)
                 },
                 "ไพ่ทาโรต์": {
-                    "prediction": f"ไพ่ทาโรต์แสดงให้เห็นว่าด้าน {category} จะเป็นไปในทิศทาง...",
-                    "explanation": f"จากการตีความไพ่ทาโรต์ที่ได้สุ่มในวันนี้ ซึ่งบ่งบอกถึงพลังงานในด้าน {category}",
+                    "prediction": f"ไพ่ทาโรต์บ่งบอกว่าด้าน {category} ของคุณจะเป็นไปในทิศทางที่ดี",
+                    "explanation": f"ไพ่ทาโรต์ถูกสุ่มโดยอิงจากพลังงานที่เกิดในวันเกิดของคุณ ซึ่งบ่งบอกถึงพลังงานในด้าน {category}",
                     "confidence": random.randint(55, 80)
                 }
             }
         elif st.session_state.language == 'en':
             additional_systems = {
                 "Egyptian Astrology": {
-                    "prediction": f"Egyptian astrology predicts that your {category} will be characterized by...",
-                    "explanation": f"Influenced by ancient Egyptian deities affecting your {category} aspects",
+                    "prediction": f"Ancient Egyptian astrology predicts that your {category} will be characterized by positive developments",
+                    "explanation": f"Influenced by ancient Egyptian deities affecting your {category} aspects based on your birth date",
                     "confidence": random.randint(60, 85)
                 },
                 "Tarot Reading": {
-                    "prediction": f"Tarot cards reveal that your {category} will move in the direction of...",
-                    "explanation": f"Based on today's tarot reading interpretation, indicating energy patterns for {category}",
+                    "prediction": f"Tarot cards reveal that your {category} will move in a favorable direction",
+                    "explanation": f"Tarot cards drawn are influenced by the energy present at your birth, indicating energy patterns for {category}",
                     "confidence": random.randint(55, 80)
                 }
             }
         else:  # zh
             additional_systems = {
                 "埃及占星术": {
-                    "prediction": f"埃及占星术预测您的{category}将表现为...",
-                    "explanation": f"受古埃及神祇影响，作用于您的{category}方面",
+                    "prediction": f"古埃及占星术预测您在{category}方面的运势将呈现积极态势",
+                    "explanation": f"受古埃及神祇影响，根据您的出生日期影响您的{category}方面",
                     "confidence": random.randint(60, 85)
                 },
                 "塔罗牌": {
-                    "prediction": f"塔罗牌揭示您的{category}将朝向...",
-                    "explanation": f"基于今天抽取的塔罗牌解读，表明{category}的能量模式",
+                    "prediction": f"塔罗牌显示您在{category}方面的运势将朝着有利方向发展",
+                    "explanation": f"抽取的塔罗牌受您出生时能量的影响，预示着{category}方面的能量模式",
                     "confidence": random.randint(55, 80)
                 }
             }
